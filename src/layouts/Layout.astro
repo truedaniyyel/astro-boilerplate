@@ -1,0 +1,76 @@
+---
+import { SITE } from "@config";
+import "@styles/base.css";
+
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
+
+const socialImageURL = new URL(SITE.image, Astro.url.origin).href;
+
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: SITE.title,
+  url: SITE.canonicalURL,
+  description: SITE.description,
+  isPartOf: {
+    "@type": "WebSite",
+    name: SITE.name,
+    url: SITE.canonicalURL,
+  },
+};
+---
+
+<!doctype html>
+<html lang=`${SITE.lang ?? "en"}`>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={SITE.canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- General Meta Tags -->
+    <title>{SITE.title}</title>
+    <meta name="title" content={SITE.title} />
+    <meta name="description" content={SITE.description} />
+    <meta name="author" content={SITE.author} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content={SITE.title} />
+    <meta property="og:description" content={SITE.description} />
+    <meta property="og:url" content={SITE.canonicalURL} />
+    <meta property="og:image" content={socialImageURL} />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content={SITE.twitter?.card} />
+    <meta property="twitter:url" content={SITE.canonicalURL} />
+    <meta property="twitter:title" content={SITE.title} />
+    <meta property="twitter:description" content={SITE.description} />
+    <meta property="twitter:image" content={socialImageURL} />
+
+    <!-- Google JSON-LD Structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+
+    <!-- Font -->
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap"
+      rel="stylesheet"
+    />
+
+    {
+      // If PUBLIC_GOOGLE_SITE_VERIFICATION is set in the environment variable,
+      // include google-site-verification tag in the heading
+      // Learn more: https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag
+      googleSiteVerification && (
+        <meta
+          name="google-site-verification"
+          content={googleSiteVerification}
+        />
+      )
+    }
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

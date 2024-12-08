@@ -1,0 +1,45 @@
+---
+// In Astro, if you import images from the `src/assets/images/` directory to use with <Image>,
+// you need to do it like this:
+// import rocket from '../assets/images/rocket.png';
+// and then: <Image src={rocket} alt="A rocketship in space." />
+// This needs to be repeated for every image.
+// However, with this method, you only need to do the following once:
+// import Images from "../components/Images.astro";
+// Then, you can use: <Images src="/src/assets/images/logos/usa-today.webp" alt="USA Today logo" />
+// and it will work.
+
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+interface Props {
+  src: string;
+  alt: string;
+  width?: number;
+  height?: number;
+  quality?: string;
+  classes?: string;
+}
+
+const { src, alt, width, height, quality = "high", classes = "" } = Astro.props;
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/**/*.{jpeg,jpg,png,gif,webp}"
+);
+if (!images[src])
+  throw new Error(
+    `"${src}" does not exist in glob: "src/assets/**/*.{jpeg,jpg,png,gif,webp}"`
+  );
+
+// const imageModule = await images[src]();
+// const imageMetadata = imageModule.default;
+---
+
+<Image
+  src={images[src]()}
+  {alt}
+  {width}
+  {height}
+  {quality}
+  widths={[512, 768, 1024, 1600]}
+  class:list={classes}
+/>
