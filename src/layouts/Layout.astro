@@ -4,7 +4,7 @@ import "@styles/base.css";
 
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
-const socialImageURL = new URL(SITE.image, Astro.url.origin).href;
+const socialImageURL = new URL(SITE.image ?? "og.jpeg", Astro.url.origin).href;
 
 const schemaData = {
   "@context": "https://schema.org",
