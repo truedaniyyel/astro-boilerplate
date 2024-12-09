@@ -3,7 +3,7 @@
 ## Dynamic OG Image Generation with Satori and Sharp.
 
 ## Project Structure
-
+```
 /
 ├── public/
 │ ├── fonts/
@@ -43,6 +43,7 @@
 ├── pnpm-lock.yaml
 ├── tailwind.config.mjs
 └── tsconfig.json
+```
 
 ## Configuration
 
